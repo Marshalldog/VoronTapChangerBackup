@@ -1,0 +1,213 @@
+
+
+[include mainsail.cfg] #fixed for my setup
+[include timelapse.cfg]
+[exclude_object]
+
+[include mcu.cfg]
+#[include adxlmcu.cfg]
+
+
+#my shit
+[include FilaSenManagement.cfg]
+[include LEDManagement.cfg]
+[skew_correction]
+
+#[include KAMP/Adaptive_Meshing.cfg]
+#[include KAMP/Line_Purge.cfg]] 
+
+#[include leds.cfg]
+
+[include tool_detection.cfg]
+[include toolchanger.cfg]
+
+[include T0-burner-dragon.cfg]
+[include T1-Rapid-Burner.cfg]
+
+
+
+[include homing.cfg]
+[include calibrate-offsets.cfg]
+[include macros.cfg]
+
+[ktamv]
+nozzle_cam_url: http://localhost/webcam2/snapshot?max_delay=0
+server_url: http://localhost:8085
+move_speed: 1800
+send_frame_to_cloud: false
+detection_tolerance: 0
+
+#fix shit
+## Add virtual_sdcard
+[virtual_sdcard]
+path: /home/pi/printer_data/gcodes
+on_error_gcode: CANCEL_PRINT
+
+### Add support for respond
+[respond]
+
+### Add support for pause_resume
+[pause_resume]
+
+
+### Add support for save variables
+[save_variables]
+filename:  ~/variables.cfg
+[gcode_arcs]
+#resolution: 1.0
+#   An arc will be split into segments. Each segment's length will
+#   equal the resolution in mm set above. Lower values will produce a
+#   finer arc, but also more work for your machine. Arcs smaller than
+#   the configured value will become straight lines. The default is
+#   1mm.
+resolution: 0.2
+
+[rounded_path]
+resolution: 0.2
+#replace_g0: True
+replace_g0: False
+
+
+[printer] #fixed for my setup
+kinematics: corexy
+max_velocity: 300  
+max_accel: 3000             #Max 4000
+max_z_velocity: 15          #Max 15 for 12V TMC Drivers, can increase for 24V
+max_z_accel: 350
+square_corner_velocity: 5.0
+
+[force_move] #fixed for my setup
+enable_force_move: True 
+
+#[ktamv]
+#nozzle_cam_url: http://localhost/webcam2/snapshot?max_delay=0
+#server_url: http://localhost:8085
+#move_speed: 1800
+#send_frame_to_cloud: false
+#detection_tolerance: 0
+
+
+[quad_gantry_level]
+##	Gantry Corners for 350mm Build
+gantry_corners:
+	-70,-10
+	420,410
+#	Probe points
+points:
+	50,50
+	50,300
+	300,300
+	300,50
+#   Probe points
+speed: 350
+horizontal_move_z: 10
+max_adjust: 20
+
+[bed_mesh]
+speed: 150
+horizontal_move_z: 10
+mesh_min: 20, 20
+mesh_max: 320, 320
+probe_count: 5,5
+
+
+#[resonance_tester]
+# accel_chip: adxl345
+# probe_points:
+#     175, 175, 20 
+
+[input_shaper]
+shaper_freq_x: 61.0
+shaper_type_x: mzv
+shaper_freq_y: 78.4
+shaper_type_y: 3hump_ei
+
+[gcode_macro _CLIENT_VARIABLE]
+variable_use_custom_pos   : True ; use custom park coordinates for x,y [True/False]
+variable_custom_park_x    : 175.0   ; custom x position; value must be within your defined min and max of X
+variable_custom_park_y    : 300.0   ; custom y position; value must be within your defined min and max of Y
+variable_custom_park_dz   : 2.0   ; custom dz value; the value in mm to lift the nozzle when move to park position
+variable_retract          : 1.0   ; the value to retract while PAUSE
+variable_cancel_retract   : 5.0   ; the value to retract while CANCEL_PRINT
+variable_speed_retract    : 35.0  ; retract speed in mm/s
+variable_unretract        : 1.0   ; the value to unretract while RESUME
+variable_speed_unretract  : 35.0  ; unretract speed in mm/s
+variable_speed_hop        : 15.0  ; z move speed in mm/s
+variable_speed_move       : 100.0 ; move speed in mm/s
+variable_park_at_cancel   : True ; allow to move the toolhead to park while execute CANCEL_PRINT [True/False]
+variable_park_at_cancel_x : 175.0  ; different park position during CANCEL_PRINT [None/Position as Float]; park_at_cancel must be True
+variable_park_at_cancel_y : 300.0  ; different park position during CANCEL_PRINT [None/Position as Float]; park_at_cancel must be True
+# !!! Caution [firmware_retraction] must be defined in the printer.cfg if you set use_fw_retract: True !!!
+variable_use_fw_retract   : False ; use fw_retraction instead of the manual version [True/False]
+variable_idle_timeout     : 0     ; time in sec until idle_timeout kicks in. Value 0 means that no value will be set or restored
+gcode:
+
+# [extruder]
+# control = pid
+# pid_kp = 37.715
+# pid_ki = 5.466
+# pid_kd = 65.059
+
+#*# <---------------------- SAVE_CONFIG ---------------------->
+#*# DO NOT EDIT THIS BLOCK OR BELOW. The contents are auto-generated.
+#*#
+#*# [heater_bed]
+#*# control = pid
+#*# pid_kp = 39.480
+#*# pid_ki = 1.393
+#*# pid_kd = 279.814
+#*#
+#*# [extruder]
+#*# control = pid
+#*# pid_kp = 32.978
+#*# pid_ki = 4.779
+#*# pid_kd = 56.888
+#*#
+#*# [extruder1]
+#*# control = pid
+#*# pid_kp = 23.728
+#*# pid_ki = 1.738
+#*# pid_kd = 80.972
+#*#
+#*# [bed_mesh T0100C]
+#*# version = 1
+#*# points =
+#*# 	0.127496, 0.163746, 0.199996, 0.196246, 0.146246
+#*# 	0.038746, 0.052496, 0.083746, 0.072496, 0.024996
+#*# 	-0.040004, -0.016254, -0.002504, -0.013754, -0.057504
+#*# 	-0.012504, 0.013746, 0.064996, 0.038746, -0.022504
+#*# 	0.154996, 0.158746, 0.176246, 0.172496, 0.107496
+#*# x_count = 5
+#*# y_count = 5
+#*# mesh_x_pps = 2
+#*# mesh_y_pps = 2
+#*# algo = lagrange
+#*# tension = 0.2
+#*# min_x = 20.0
+#*# max_x = 320.0
+#*# min_y = 20.0
+#*# max_y = 320.0
+#*#
+#*# [bed_mesh T055C]
+#*# version = 1
+#*# points =
+#*# 	0.164887, 0.172387, 0.193637, 0.188637, 0.128637
+#*# 	0.067387, 0.073637, 0.092387, 0.069887, 0.037387
+#*# 	-0.005113, 0.026137, 0.032387, 0.018637, -0.011363
+#*# 	0.038637, 0.034887, 0.076137, 0.046137, 0.021137
+#*# 	0.096137, 0.116137, 0.142387, 0.119887, 0.099887
+#*# x_count = 5
+#*# y_count = 5
+#*# mesh_x_pps = 2
+#*# mesh_y_pps = 2
+#*# algo = lagrange
+#*# tension = 0.2
+#*# min_x = 20.0
+#*# max_x = 320.0
+#*# min_y = 20.0
+#*# max_y = 320.0
+#*#
+#*# [skew_correction CaliFlower]
+#*# xy_skew = 0.0010030103483496464
+#*# xz_skew = 0.0
+#*# yz_skew = 0.0
